@@ -482,7 +482,7 @@ window.WB = {
   postsDir: "{{ site.data.workbench.posts_dir }}",
   mediaDir: "{{ site.data.workbench.media_dir }}",
   passwordSha256: "{{ site.data.workbench.password_sha256 }}",
-  dailyGoal: {{ site.data.workbench.daily_goal | default: 800 }},
+  targetWords: {{ site.data.workbench.target_words | default: 100000 }},
   tokenHelp: {{ site.data.workbench.token_help | jsonify }},
   defaults: {
     categories: "{{ site.data.workbench.new_post_defaults.categories }}",

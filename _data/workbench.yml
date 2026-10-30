@@ -18,7 +18,7 @@ new_post_defaults:
   description: ""
   type: "note"
 
-# 每日写作目标（字），仪表盘里画进度环
-daily_goal: 800
+# 巢满的目标字数，仪表盘进度环按它算
+target_words: 100000
 
 token_help: "在 github.com/settings/tokens 建一个 Fine-grained token：只授权 xing05188/xiaoyanzi，权限勾 Contents: Read and write、Pages: Read。Token 只存在当前标签页，关掉就没了。"

@@ -118,7 +118,7 @@ description: "一两句话的摘要，会显示在卡片和搜索结果里。"
 | `_data/shelf.yml` | 书架（`reading` / `done` / `want` 三组） |
 | `_data/friends.yml` | 友链 |
 | `_data/quotes.yml` | 今日一句（首页「换一句」的语料） |
-| `_data/workbench.yml` | 工作台密码、仓库、写作目标、Token 提示文案 |
+| `_data/workbench.yml` | 工作台密码、仓库、目标字数（进度环）、Token 提示文案 |
 
 站点基本信息还在 **`_config.yml`**：
 

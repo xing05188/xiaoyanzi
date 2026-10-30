@@ -235,7 +235,7 @@
         return yamlScalar(x.trim());
       }).filter(function (x) { return x !== ''; });
     }
-    if (/^-?\d+(\.\d+)?$/.test(s)) return Number(s);
+    if (/^-?\d+(\.\d+)?$/.test(s) && s.length < 15) return Number(s);
     return s;
   }
 
@@ -838,7 +838,25 @@
         try { localStorage.removeItem(draftKey(path)); } catch (e) {}
         toast('保存好了，GitHub Pages 一会儿就会更新', 'ok');
         bumpTodayWords(wordCount(data.body));
-        return loadPosts();
+        // 本地先更新列表，不等 Pages 重新生成索引
+        var slug = path.replace(/^.*\//, '').replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+        S.posts = S.posts.filter(function (p) { return p.path !== path; });
+        S.posts.unshift({
+          path: path,
+          url: '/posts/' + slug + '/',
+          title: data.fm.title,
+          date: data.fm.date,
+          type: data.fm.type,
+          cat: Array.isArray(data.fm.categories) ? data.fm.categories[0] : data.fm.categories,
+          tags: data.fm.tags || [],
+          desc: data.fm.description || '',
+          words: wordCount(data.body)
+        });
+        renderList();
+        renderDash();
+        renderDashRecent();
+        // 索引要等 Pages 重新构建，90 秒后再去对一次
+        setTimeout(loadPosts, 90000);
       })
       .catch(function (e) {
         setFlag('保存失败', 'is-dirty');
@@ -866,7 +884,11 @@
             $('#peWrap').hidden = true;
             $('#peEmpty').hidden = false;
             delete S.bodies[path];
-            loadPosts();
+            S.posts = S.posts.filter(function (p) { return p.path !== path; });
+            renderList();
+            renderDash();
+            renderDashRecent();
+            setTimeout(loadPosts, 90000);
           }).catch(function (e) { toast('删除失败：' + e.message, 'err'); });
         } }
       ]
@@ -891,7 +913,7 @@
   /* ---------------- 仪表盘 ---------------- */
   function renderGoal() {
     var total = S.posts.reduce(function (a, p) { return a + (p.words || 0); }, 0);
-    var cap = 100000;
+    var cap = cfg.targetWords || 100000;
     var pct = Math.min(1, total / cap);
     var ring = $('#goalRing');
     if (ring) {
@@ -902,7 +924,7 @@
     var numEl = $('.goal-num');
     if (numEl) {
       numEl.innerHTML = '<b>' + (total >= 10000 ? (total / 10000).toFixed(1) + '万' : num(total)) +
-        '</b><span>字 / 10 万</span>';
+        '</b><span>字 / ' + (cap >= 10000 ? (cap / 10000) + ' 万' : num(cap)) + '</span>';
     }
     var h3 = $('.goal-text h3');
     if (h3) h3.textContent = '巢的厚度';
@@ -1333,19 +1355,27 @@
   }
 
   function repFriend(f) {
+    var tints = [['blue', '蓝'], ['green', '绿'], ['warm', '暖'], ['plum', '绛']];
     return '<div class="set-rep-item" data-rep="friend">' +
       '<button class="set-rep-del" type="button" title="删掉">✕</button>' +
       '<input type="text" data-k="name" placeholder="站点名" value="' + esc(f.name) + '">' +
       '<input type="text" data-k="url" placeholder="https://" value="' + esc(f.url) + '">' +
       '<input type="text" data-k="desc" placeholder="一句话介绍" value="' + esc(f.desc) + '">' +
+      '<select data-k="tint">' + tints.map(function (t) {
+        return '<option value="' + t[0] + '"' + (f.tint === t[0] ? ' selected' : '') + '>' + t[1] + '色</option>';
+      }).join('') + '</select>' +
       '</div>';
   }
   function repMurmur(m) {
+    var moods = [['calm', '平静'], ['joy', '开心'], ['think', '在想'], ['tired', '累']];
     return '<div class="set-rep-item" data-rep="murmur">' +
       '<button class="set-rep-del" type="button" title="删掉">✕</button>' +
       '<input type="text" data-k="date" placeholder="2026-11-02 21:40" value="' + esc(m.date) + '">' +
-      '<select data-k="mood"><option value="calm">平静</option><option value="joy">开心</option><option value="think">在想</option><option value="tired">累</option></select>' +
+      '<select data-k="mood">' + moods.map(function (x) {
+        return '<option value="' + x[0] + '"' + (m.mood === x[0] ? ' selected' : '') + '>' + x[1] + '</option>';
+      }).join('') + '</select>' +
       '<textarea data-k="text" rows="3" placeholder="写点什么">' + esc(m.text) + '</textarea>' +
+      '<input type="text" data-k="tags" placeholder="标签，用逗号隔开" value="' + esc((m.tags || []).join(', ')) + '">' +
       '</div>';
   }
   function repQuote(q) {
@@ -1365,8 +1395,8 @@
     if (add) {
       add.addEventListener('click', function () {
         var rep = $('#sfRep', body);
-        var tpl = key === 'friends' ? repFriend({ name: '', url: '', desc: '' })
-          : key === 'murmur' ? repMurmur({ date: todayStr() + ' 20:00', mood: 'calm', text: '' })
+        var tpl = key === 'friends' ? repFriend({ name: '', url: '', desc: '', tint: 'blue' })
+          : key === 'murmur' ? repMurmur({ date: todayStr() + ' 20:00', mood: 'calm', text: '', tags: [] })
             : repQuote({ text: '', from: '' });
         rep.insertAdjacentHTML('beforeend', tpl);
         $$('.set-rep-del', rep).forEach(function (b) {
@@ -1408,7 +1438,8 @@
           return {
             name: el.querySelector('[data-k="name"]').value.trim(),
             url: el.querySelector('[data-k="url"]').value.trim(),
-            desc: el.querySelector('[data-k="desc"]').value.trim()
+            desc: el.querySelector('[data-k="desc"]').value.trim(),
+            tint: el.querySelector('[data-k="tint"]').value
           };
         }).filter(function (x) { return x.name && x.url; });
       } else if (key === 'murmur') {
@@ -1417,7 +1448,9 @@
             date: el.querySelector('[data-k="date"]').value.trim(),
             mood: el.querySelector('[data-k="mood"]').value,
             text: el.querySelector('[data-k="text"]').value.trim(),
-            tags: []
+            tags: el.querySelector('[data-k="tags"]').value.split(/[,，]/).map(function (x) {
+              return x.trim();
+            }).filter(Boolean)
           };
         }).filter(function (x) { return x.text; });
       } else if (key === 'quotes') {
