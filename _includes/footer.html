@@ -28,16 +28,24 @@
     <nav class="footer-nav" aria-label="页脚导航">
       <div class="footer-col">
         <h4>逛一逛</h4>
-        {% for item in site.nav limit: 4 %}
-        <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
-        {% endfor %}
+        <a href="{{ '/notes/' | relative_url }}">笔记</a>
+        <a href="{{ '/life/' | relative_url }}">生活</a>
+        <a href="{{ '/murmur/' | relative_url }}">碎语</a>
+        <a href="{{ '/shelf/' | relative_url }}">书架</a>
       </div>
       <div class="footer-col">
         <h4>再来</h4>
+        <a href="{{ '/archive/' | relative_url }}">归档</a>
         <a href="{{ '/tags/' | relative_url }}">标签</a>
+        <a href="{{ '/friends/' | relative_url }}">友链</a>
+        <a href="{{ '/guestbook/' | relative_url }}">留言板</a>
+      </div>
+      <div class="footer-col">
+        <h4>顺手</h4>
+        <a href="{{ '/saved/' | relative_url }}">我的收藏</a>
         <a href="{{ '/search/' | relative_url }}">搜索</a>
         <a href="{{ '/feed.xml' | relative_url }}">订阅 RSS</a>
-        <a href="https://github.com/{{ site.owner.github }}" target="_blank" rel="noopener">GitHub</a>
+        <a href="{{ '/studio/' | relative_url }}">工作台</a>
       </div>
     </nav>
   </div>

@@ -129,3 +129,22 @@ layout: default
 <div class="lightbox" id="lightbox" role="dialog" aria-label="图片预览" aria-hidden="true">
   <img alt="">
 </div>
+
+<div class="read-tools" id="readTools" data-url="{{ page.url | relative_url }}" data-title="{{ page.title | escape }}" data-cat="{{ cat }}">
+  <button class="rt-btn" id="rtSave" type="button" aria-pressed="false" title="收着，稍后再读">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h12v16l-6-4.2-6 4.2z"/></svg>
+    <span>收着</span>
+  </button>
+  <span class="rt-sep" aria-hidden="true"></span>
+  <button class="rt-btn" id="rtFont" type="button" title="调字号">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19 10 5l6 14M6.4 14h7.2"/><path d="M17 9h4M19 7v4"/></svg>
+    <span id="rtFontLabel">字</span>
+  </button>
+  <button class="rt-btn" id="rtCopy" type="button" title="复制链接">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13.5a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 1 0-5.7-5.7l-1.3 1.3"/><path d="M14 10.5a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 1 0 5.7 5.7l1.3-1.3"/></svg>
+  </button>
+  <span class="rt-sep" aria-hidden="true"></span>
+  <button class="rt-btn" id="rtTop" type="button" title="回到顶部">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+</div>

@@ -13,28 +13,33 @@
   /* ---------------- 主题 ---------------- */
   var themeBtn = $('#themeToggle');
   var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  var THEME_COLOR = { light: '#edf5f5', dark: '#0d1a22', dawn: '#fdf1e7', dusk: '#f4e9e6' };
 
   function resolveTheme(mode) {
-    return mode === 'auto' ? (mql.matches ? 'dark' : 'light') : mode;
+    if (!mode || mode === 'auto') return mql.matches ? 'dark' : 'light';
+    return mode;
   }
 
   function applyTheme(mode) {
     root.setAttribute('data-theme', mode);
     root.dataset.mode = mode;
     root.dataset.resolved = resolveTheme(mode);
-    var meta = doc.querySelector('meta[name="theme-color"]');
-    if (meta) {
-      var isDark = root.dataset.resolved === 'dark';
-      var m = doc.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute('content', isDark ? '#0d1a22' : '#edf5f5');
-    }
+    var m = doc.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', THEME_COLOR[root.dataset.resolved] || '#edf5f5');
+    try {
+      doc.dispatchEvent(new CustomEvent('yy:theme', { detail: root.dataset.resolved }));
+    } catch (e) {}
   }
 
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {
-      var next = root.dataset.resolved === 'dark' ? 'light' : 'dark';
-      try { localStorage.setItem('yy-theme', next); } catch (e) {}
-      applyTheme(next);
+      if (window.YY && window.YY.openThemeMenu) {
+        window.YY.openThemeMenu(themeBtn);
+      } else {
+        var next = root.dataset.resolved === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem('yy-theme', next); } catch (e) {}
+        applyTheme(next);
+      }
       themeBtn.animate
         ? themeBtn.animate(
             [{ transform: 'rotate(0deg) scale(1)' }, { transform: 'rotate(18deg) scale(.9)' }, { transform: 'rotate(0deg) scale(1)' }],

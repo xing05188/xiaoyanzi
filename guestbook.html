@@ -1,0 +1,83 @@
+---
+layout: page
+title: 留言板
+description: 路过就留一句吧。哪怕只是「今天天气不错」。
+permalink: /guestbook/
+wide: true
+count_text: 燕子在的时候会回
+---
+
+{% if site.giscus.repo_id != "" and site.giscus.repo_id %}
+<!-- 已配置 giscus：用真正的留言区 -->
+<div class="gb-giscus">
+  <script src="https://giscus.app/client.js"
+    data-repo="{{ site.giscus.repo }}"
+    data-repo-id="{{ site.giscus.repo_id }}"
+    data-category="{{ site.giscus.category }}"
+    data-category-id="{{ site.giscus.category_id }}"
+    data-mapping="{{ site.giscus.mapping | default: 'pathname' }}"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="{{ site.giscus.theme | default: 'preferred_color_scheme' }}"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async>
+  </script>
+</div>
+{% else %}
+
+<div class="gb-wrap">
+  <form class="gb-form" id="gbForm" autocomplete="off">
+    <div class="gb-row">
+      <label class="gb-field gb-field--name">
+        <span>怎么称呼</span>
+        <input type="text" id="gbName" maxlength="16" placeholder="路过的某只燕子">
+      </label>
+      <div class="gb-field gb-field--mood">
+        <span>此刻心情</span>
+        <div class="gb-moods" id="gbMoods" role="radiogroup" aria-label="心情">
+          <button type="button" class="gb-mood is-on" data-mood="sun" role="radio" aria-checked="true" title="晴天">☀</button>
+          <button type="button" class="gb-mood" data-mood="leaf" role="radio" aria-checked="false" title="平静">❦</button>
+          <button type="button" class="gb-mood" data-mood="rain" role="radio" aria-checked="false" title="下雨">☂</button>
+          <button type="button" class="gb-mood" data-mood="star" role="radio" aria-checked="false" title="深夜">✦</button>
+        </div>
+      </div>
+    </div>
+
+    <label class="gb-field">
+      <span>想说的话</span>
+      <textarea id="gbText" rows="4" maxlength="240" placeholder="写点什么……"></textarea>
+    </label>
+
+    <div class="gb-foot">
+      <span class="gb-count"><i id="gbCount">0</i> / 240</span>
+      <button class="gb-send" type="submit" id="gbSend">
+        贴上去
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </form>
+
+  <p class="gb-tip" id="gbTip">
+    这块板子现在只存在你自己的浏览器里（<code>localStorage</code>），刷新还在，换设备就没了 ——
+    所以它更像一面「今天的墙」。想要真正能收到留言，见下面那段说明。
+  </p>
+
+  <div class="gb-wall" id="gbWall"></div>
+  <p class="gb-empty" id="gbEmpty">墙上还是空的，你可以贴第一张。</p>
+</div>
+
+<details class="gb-how">
+  <summary>想让留言真的被看到？</summary>
+  <div>
+    <p>有两种省事的做法，都不用自己写后端：</p>
+    <ol>
+      <li><b>giscus</b>：用 GitHub Discussions 当留言区。在 <a href="https://giscus.app/zh-CN" target="_blank" rel="noopener">giscus.app</a> 授权仓库后，把生成的 <code>data-repo-id</code> / <code>data-category-id</code> 填进 <code>_config.yml</code> 的 <code>giscus</code> 段，这个页面就会自动换成真正的留言区。</li>
+      <li><b>GitHub Issue</b>：每张纸条做成一个 issue，简单粗暴但有效。</li>
+    </ol>
+    <p>在此之前，这里就是个本地的便签墙 —— 也挺好，写完自己看看。</p>
+  </div>
+</details>
+{% endif %}

@@ -37,9 +37,22 @@ nav:
   - { name: 首页, url: "/" }
   - { name: 笔记, url: "/notes/" }
   - { name: 生活, url: "/life/" }
+  - { name: 碎语, url: "/murmur/" }
+  - { name: 书架, url: "/shelf/" }
   - { name: 归档, url: "/archive/" }
   - { name: 标签, url: "/tags/" }
   - { name: 关于, url: "/about/" }
+
+# ---------- 留言板（giscus，可选） ----------
+# 想收到真留言：去 https://giscus.app/zh-CN 授权仓库，把下面几项填上，
+# /guestbook/ 就会自动从「本地便签墙」切换成真正的留言区。
+giscus:
+  repo: ""
+  repo_id: ""
+  category: ""
+  category_id: ""
+  mapping: pathname
+  theme: preferred_color_scheme
 
 # ---------- 链接格式 ----------
 permalink: /posts/:title/

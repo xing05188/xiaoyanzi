@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /studio-posts.json
+---
+[
+{% for p in site.posts %}{
+  "path": {{ p.path | jsonify }},
+  "url": {{ p.url | jsonify }},
+  "title": {{ p.title | jsonify }},
+  "date": "{{ p.date | date: '%Y-%m-%d' }}",
+  "type": {{ p.type | default: 'note' | jsonify }},
+  "cat": {{ p.categories | first | default: '笔记' | jsonify }},
+  "tags": {{ p.tags | jsonify }},
+  "desc": {{ p.description | default: p.summary | default: '' | jsonify }},
+  "words": {{ p.content | strip_html | strip_newlines | size }}
+}{% unless forloop.last %},{% endunless %}{% endfor %}
+]

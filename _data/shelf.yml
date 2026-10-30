@@ -1,0 +1,70 @@
+# ============================================================
+#  书架
+#  progress: 0-100，读完的放 done，想读的放 want
+#  tint: 书脊颜色（blue / green / warm / plum），可留空
+# ============================================================
+
+reading:
+  - title: "人类简史"
+    author: "尤瓦尔·赫拉利"
+    progress: 62
+    tint: warm
+    note: "读到「农业革命是史上最大的骗局」这一章，被说服了一半。"
+    started: 2026-09-12
+
+  - title: "代码整洁之道"
+    author: "Robert C. Martin"
+    progress: 35
+    tint: blue
+    note: "当工具书翻，每次写作业前看两页，管用。"
+    started: 2026-10-01
+
+  - title: "我与地坛"
+    author: "史铁生"
+    progress: 18
+    tint: green
+    note: "读得慢。有些段落要合上书坐一会儿。"
+    started: 2026-10-20
+
+done:
+  - title: "小王子"
+    author: "圣埃克苏佩里"
+    rating: 5
+    tint: warm
+    note: "第三次读，这次注意到狐狸说的「驯养」。"
+    finished: 2026-08-30
+
+  - title: "活着"
+    author: "余华"
+    rating: 5
+    tint: plum
+    note: "一个下午读完，读完坐在床上很久没动。"
+    finished: 2026-07-14
+
+  - title: "深入理解计算机系统"
+    author: "Bryant"
+    rating: 4
+    tint: blue
+    note: "只读了前六章，但已经值回票价。"
+    finished: 2026-06-20
+
+  - title: "夜航西飞"
+    author: "柏瑞尔·马卡姆"
+    rating: 4
+    tint: green
+    note: "非洲的天空写得比故事好看。"
+    finished: 2026-05-02
+
+want:
+  - title: "万历十五年"
+    author: "黄仁宇"
+    note: "历史课老师提了三次。"
+  - title: "设计中的设计"
+    author: "原研哉"
+    note: "想看看「白」是怎么被讲成一本书的。"
+  - title: "卡拉马佐夫兄弟"
+    author: "陀思妥耶夫斯基"
+    note: "有点怕，但总有一天要读。"
+  - title: "沉默的大多数"
+    author: "王小波"
+    note: "被朋友安利了一整晚。"

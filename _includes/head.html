@@ -50,6 +50,7 @@
 {% if page.layout == "post" or page.layout == "page" %}
 <link rel="stylesheet" href="{{ '/assets/css/post.css' | relative_url }}">
 {% endif %}
+<link rel="stylesheet" href="{{ '/assets/css/extra.css' | relative_url }}">
 
 {% if page.layout == "post" %}
 <script type="application/ld+json">
@@ -77,11 +78,8 @@
       var mode = saved || 'auto';
       document.documentElement.setAttribute('data-theme', mode);
       document.documentElement.dataset.mode = mode;
-      if (mode === 'auto') {
-        document.documentElement.dataset.resolved = mql.matches ? 'dark' : 'light';
-      } else {
-        document.documentElement.dataset.resolved = mode;
-      }
+      document.documentElement.dataset.resolved =
+        (mode === 'auto' || mode === '') ? (mql.matches ? 'dark' : 'light') : mode;
     } catch (e) {}
   })();
 </script>

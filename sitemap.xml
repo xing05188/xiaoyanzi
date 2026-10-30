@@ -10,7 +10,7 @@ layout: null
     <priority>1.0</priority>
   </url>
   {% for page in site.pages %}
-    {% if page.url contains '.xml' or page.url contains '.json' or page.url contains '404' or page.url contains 'feed' %}{% continue %}{% endif %}
+    {% if page.url contains '.xml' or page.url contains '.json' or page.url contains '404' or page.url contains 'feed' or page.url contains '/studio' %}{% continue %}{% endif %}
   <url>
     <loc>{{ page.url | absolute_url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>

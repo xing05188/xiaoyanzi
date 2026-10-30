@@ -1,0 +1,40 @@
+# ============================================================
+#  友链 —— 交换链接请到留言板留言，或在 GitHub 提 issue
+#  avatar 留空会自动用首字生成一枚圆章
+# ============================================================
+
+- name: "星记"
+  url: "https://xing05188.github.io/"
+  desc: "同一个人的另一块试验田：星空、长文、慢更新。"
+  avatar: ""
+  tint: plum
+
+- name: "阮一峰的网络日志"
+  url: "https://www.ruanyifeng.com/blog/"
+  desc: "每周五的科技爱好者周刊，我看了两年。"
+  avatar: ""
+  tint: blue
+
+- name: "少数派"
+  url: "https://sspai.com/"
+  desc: "效率工具和数字生活的入门读物。"
+  avatar: ""
+  tint: warm
+
+- name: "MDN Web Docs"
+  url: "https://developer.mozilla.org/zh-CN/"
+  desc: "前端遇到问题第一个翻的地方。"
+  avatar: ""
+  tint: green
+
+- name: "Jekyll 文档"
+  url: "https://jekyllrb.com/docs/"
+  desc: "这个站就是照着它搭起来的。"
+  avatar: ""
+  tint: blue
+
+- name: "中国国家图书馆"
+  url: "https://www.nlc.cn/"
+  desc: "寒暑假回家前，会去数字资源里翻一翻。"
+  avatar: ""
+  tint: green

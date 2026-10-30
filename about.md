@@ -55,6 +55,19 @@ wide: true
 第一次来，可以先看看 <a href="{{ '/notes/' | relative_url }}">笔记</a>；
 想随便翻翻，就去 <a href="{{ '/life/' | relative_url }}">生活</a>。
 
+## 除了文章，还有几间小屋子
+
+| 去哪儿 | 是什么 |
+| --- | --- |
+| <a href="{{ '/murmur/' | relative_url }}">碎语</a> | 比文章短、比想法长的几句话，像电线上一只一只停着的燕子 |
+| <a href="{{ '/shelf/' | relative_url }}">书架</a> | 在读的进度、读完的评分、欠着的书债，都摊在这里 |
+| <a href="{{ '/friends/' | relative_url }}">友链</a> | 一些我常去的角落。想换链接的话，那边写着规矩 |
+| <a href="{{ '/guestbook/' | relative_url }}">留言板</a> | 路过就贴一张便签，不用注册 |
+| <a href="{{ '/saved/' | relative_url }}">我的收藏</a> | 读到一半被打断时点「收着」，文章会落到这里（存本机） |
+
+右上角那轮太阳点开有四种天色：清晨、正午、黄昏、深夜。挑一个顺眼的。
+按 `?` 还能看到全部快捷键。
+
 ## 时间线
 
 <div class="timeline">

@@ -1,0 +1,24 @@
+# ============================================================
+#  燕语 · 工作台配置（/studio/）
+#  密码只是第一道门；真正的写入由 GitHub Token 授权。
+#  改密码：printf '新密码' | sha256sum  替换下面的值
+# ============================================================
+
+# 默认密码：yanzi2026
+password_sha256: 8ef5e66bd470171abf446959be0ab6c7d6902b220df564fecd1ae4df5bd6c9e4
+
+repo: xing05188/xiaoyanzi
+branch: main
+posts_dir: _posts
+media_dir: assets/img/uploads
+
+new_post_defaults:
+  categories: "笔记"
+  tags: ""
+  description: ""
+  type: "note"
+
+# 每日写作目标（字），仪表盘里画进度环
+daily_goal: 800
+
+token_help: "在 github.com/settings/tokens 建一个 Fine-grained token：只授权 xing05188/xiaoyanzi，权限勾 Contents: Read and write、Pages: Read。Token 只存在当前标签页，关掉就没了。"

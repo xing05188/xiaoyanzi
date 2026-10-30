@@ -1,0 +1,499 @@
+---
+layout: null
+permalink: /studio/
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>燕巢工作台 · {{ site.title }}</title>
+<link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/workbench.css' | relative_url }}">
+</head>
+<body class="st-body">
+
+<!-- ===================== 门 ===================== -->
+<div class="st-gate" id="stGate">
+  <div class="gate-sky" aria-hidden="true">
+    <span class="gate-wire"></span>
+    <span class="gate-bird">
+      <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+    </span>
+  </div>
+
+  <div class="gate-card" id="gateCard">
+    <div class="gate-mark" aria-hidden="true">
+      <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+    </div>
+    <h1>燕巢工作台</h1>
+    <p class="gate-sub">写文章 / 看数据 / 改站点 —— 只有一只燕子有钥匙</p>
+
+    <form class="gate-form" id="gateForm" autocomplete="off">
+      <div class="gate-field">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+        <input type="password" id="gatePassword" placeholder="访问密码" autocomplete="current-password" required>
+        <button type="submit" id="gateBtn">进屋</button>
+      </div>
+      <p class="gate-error" id="gateError" role="alert"></p>
+    </form>
+
+    <div class="gate-note">
+      <p>密码是第一道门；要发布文章还得连上 GitHub Token（只存在当前标签页）。</p>
+      <p class="gate-dim">初始密码见 <code>README.md</code>。</p>
+    </div>
+  </div>
+
+  <a class="gate-back" href="{{ '/' | relative_url }}">← 回檐下</a>
+</div>
+
+<!-- ===================== 主界面 ===================== -->
+<div class="st-app" id="stApp" hidden>
+
+  <aside class="st-side" id="stSide">
+    <a class="st-brand" href="{{ '/' | relative_url }}">
+      <span class="st-mark" aria-hidden="true">
+        <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+      </span>
+      <span class="st-brand-text"><b>燕巢</b><em>工作台</em></span>
+    </a>
+
+    <nav class="st-nav" id="stNav" aria-label="工作台导航">
+      <button class="st-nav-btn is-on" data-pane="dash" type="button">
+        <svg viewBox="0 0 24 24"><path d="M4 20V9.5L12 4l8 5.5V20"/><path d="M9.5 20v-6h5v6"/></svg>
+        <span>仪表盘</span>
+      </button>
+      <button class="st-nav-btn" data-pane="posts" type="button">
+        <svg viewBox="0 0 24 24"><path d="M5 3.5h9l5 5V20a.5.5 0 0 1-.5.5h-13A.5.5 0 0 1 5 20V4a.5.5 0 0 1 .5-.5z"/><path d="M14 3.5v5h5M8.5 13h7M8.5 17h4.5"/></svg>
+        <span>文章</span>
+        <i class="st-badge" id="navPostCount" hidden></i>
+      </button>
+      <button class="st-nav-btn" data-pane="stats" type="button">
+        <svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg>
+        <span>统计</span>
+      </button>
+      <button class="st-nav-btn" data-pane="media" type="button">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="8.5" cy="10" r="1.6"/><path d="m21 16-5.5-5-9 8"/></svg>
+        <span>媒体</span>
+      </button>
+      <button class="st-nav-btn" data-pane="settings" type="button">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>
+        <span>设置</span>
+      </button>
+      <button class="st-nav-btn" data-pane="deploy" type="button">
+        <svg viewBox="0 0 24 24"><path d="M12 3c3.5 2 5.5 5.5 5.5 9L12 18l-5.5-6c0-3.5 2-7 5.5-9z"/><circle cx="12" cy="10" r="1.8"/><path d="M8 17.5 6 21l3.4-1M16 17.5 18 21l-3.4-1"/></svg>
+        <span>发布</span>
+        <i class="st-dot" id="navBuildDot" hidden></i>
+      </button>
+    </nav>
+
+    <div class="st-side-foot">
+      <div class="st-conn" id="stConn">
+        <span class="st-conn-dot" id="connDot"></span>
+        <span class="st-conn-text" id="connText">未连接 GitHub</span>
+      </div>
+      <button class="st-mini" id="sideLogout" type="button" title="断开 Token 并退出">退出</button>
+    </div>
+  </aside>
+
+  <div class="st-main-wrap">
+    <header class="st-top">
+      <button class="st-burger" id="stBurger" type="button" aria-label="菜单">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+      <div class="st-crumb">
+        <span id="crumbMain">巢</span>
+        <i>/</i>
+        <span id="crumbSub">仪表盘</span>
+      </div>
+      <div class="st-top-right">
+        <button class="st-icon" id="stCmdBtn" type="button" title="命令面板（⌘K）">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          <kbd>⌘K</kbd>
+        </button>
+        <button class="st-icon" id="stTheme" type="button" title="明暗">
+          <svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.7 8.7 0 1 0 11.1 11.1z"/></svg>
+        </button>
+        <a class="st-icon" href="{{ '/' | relative_url }}" target="_blank" title="打开站点">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5H11"/><path d="M15 3.5h5.5V9M10.5 13.5 21 3"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <main class="st-panes" id="stPanes">
+
+      <!-- ==================== 仪表盘 ==================== -->
+      <section class="st-pane is-on" id="pane-dash">
+        <div class="pane-head">
+          <div>
+            <h2>巢</h2>
+            <p class="pane-sub" id="dashHello">早上好，小燕子</p>
+          </div>
+          <div class="pane-head-act">
+            <button class="st-btn primary" data-new-post type="button">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>写点什么
+            </button>
+          </div>
+        </div>
+
+        <div class="dash-hero">
+          <div class="goal-card">
+            <div class="goal-ring">
+              <svg viewBox="0 0 120 120">
+                <circle class="gr-bg" cx="60" cy="60" r="52"/>
+                <circle class="gr-fg" id="goalRing" cx="60" cy="60" r="52"/>
+              </svg>
+              <div class="goal-num"><b id="goalNum">0</b><span>/ <i id="goalTarget">800</i> 字</span></div>
+            </div>
+            <div class="goal-text">
+              <h3>今天的泥</h3>
+              <p id="goalSay">还没开始衔呢。</p>
+              <span class="goal-tip">一圈 10 万字，慢慢衔</span>
+            </div>
+          </div>
+
+          <div class="stat-mini" id="dashStats"></div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="st-card">
+            <div class="card-title">
+              最近在写
+              <button class="link-more" data-goto="posts" type="button">全部 →</button>
+            </div>
+            <ul class="recent-list" id="dashRecent"><li class="sk-line"></li><li class="sk-line"></li><li class="sk-line"></li></ul>
+          </div>
+
+          <div class="st-card">
+            <div class="card-title">随手做点</div>
+            <div class="quick-grid">
+              <button class="quick-btn" data-quick="new" type="button">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>新文章</span>
+              </button>
+              <button class="quick-btn" data-quick="murmur" type="button">
+                <svg viewBox="0 0 24 24"><path d="M4 6h16M4 11h12M4 16h8"/></svg><span>记碎语</span>
+              </button>
+              <button class="quick-btn" data-quick="upload" type="button">
+                <svg viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg><span>传图片</span>
+              </button>
+              <button class="quick-btn" data-quick="build" type="button">
+                <svg viewBox="0 0 24 24"><path d="M12 3c3.5 2 5.5 5.5 5.5 9L12 18l-5.5-6c0-3.5 2-7 5.5-9z"/></svg><span>发布状态</span>
+              </button>
+              <button class="quick-btn" data-quick="random" type="button">
+                <svg viewBox="0 0 24 24"><path d="M16 3.5h4.5V8M4 20 20.5 3.5M20.5 16v4.5H16M15 15l5.5 5.5M4 4l5 5"/></svg><span>随机一篇</span>
+              </button>
+              <button class="quick-btn" data-quick="site" type="button">
+                <svg viewBox="0 0 24 24"><path d="M18 13v6.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5H11"/><path d="M15 3.5h5.5V9M10.5 13.5 21 3"/></svg><span>看站点</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="st-card token-card" id="tokenCard">
+          <div class="tc-head">
+            <span class="tc-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M14.5 8.5a4 4 0 1 0-3 6.5m-3.5 3.5a4 4 0 1 1 3-6.5M12 12h4"/></svg>
+            </span>
+            <div>
+              <h3>连上 GitHub，就能写了</h3>
+              <p>文章、图片、设置都通过 GitHub API 提交。Token 只放在这个标签页的 sessionStorage 里，关掉页面即失效。</p>
+            </div>
+          </div>
+          <div class="tc-form">
+            <input type="password" id="tokenInput" placeholder="ghp_… 或 github_pat_…" autocomplete="off" spellcheck="false">
+            <button class="st-btn primary" id="tokenConnect" type="button">连接</button>
+          </div>
+          <p class="tc-help">{{ site.data.workbench.token_help }}</p>
+          <p class="tc-help"><a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">去创建 Fine-grained token →</a></p>
+        </div>
+      </section>
+
+      <!-- ==================== 文章 ==================== -->
+      <section class="st-pane" id="pane-posts">
+        <div class="posts-layout">
+          <aside class="posts-side" id="postsSide">
+            <div class="ps-head">
+              <h2>篇目</h2>
+              <button class="st-btn primary sm" data-new-post type="button">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>新建
+              </button>
+            </div>
+            <div class="ps-search">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+              <input type="search" id="postFilter" placeholder="搜标题 / 标签 / 分类…" autocomplete="off">
+            </div>
+            <div class="ps-tabs" id="postTabs">
+              <button class="ps-tab is-on" data-filter="all" type="button">全部</button>
+              <button class="ps-tab" data-filter="note" type="button">笔记</button>
+              <button class="ps-tab" data-filter="life" type="button">生活</button>
+              <button class="ps-tab" data-filter="read" type="button">读书</button>
+            </div>
+            <ul class="ps-list" id="postList"></ul>
+            <div class="ps-empty" id="postEmpty" hidden>这里空着</div>
+          </aside>
+
+          <div class="posts-editor" id="postsEditor">
+            <div class="pe-empty" id="peEmpty">
+              <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+              <p>从左边挑一篇，或者新写一篇</p>
+              <span>没有 Token 也能看原文，改完点保存才需要</span>
+              <button class="st-btn primary sm pe-empty-btn" data-new-post type="button">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>写一篇新的
+              </button>
+            </div>
+
+            <div class="pe-wrap" id="peWrap" hidden>
+              <div class="pe-top">
+                <div class="pe-pathline">
+                  <input class="pe-path" id="pePath" type="text" spellcheck="false" title="文件路径">
+                  <span class="pe-flag" id="peFlag"></span>
+                </div>
+                <div class="pe-acts">
+                  <button class="st-btn ghost sm" id="pePreview" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"/><circle cx="12" cy="12" r="2.8"/></svg>
+                    预览
+                  </button>
+                  <button class="st-btn ghost sm danger" id="peDelete" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M3.5 6.5h17M9 6.5V4.2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2.3"/><path d="M18.5 6.5 17.6 20a1.6 1.6 0 0 1-1.6 1.5H8a1.6 1.6 0 0 1-1.6-1.5L5.5 6.5"/></svg>
+                    删除
+                  </button>
+                  <button class="st-btn primary sm" id="peSave" type="button">
+                    <svg viewBox="0 0 24 24"><path d="M19 20.5H5.5A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5h10L20 8v11a1.5 1.5 0 0 1-1.5 1.5z"/><path d="M16.5 20.5v-7h-9v7M8 3.5v4h7"/></svg>
+                    保存 <kbd>⌘S</kbd>
+                  </button>
+                </div>
+              </div>
+
+              <div class="pe-body" id="peBody">
+                <div class="pe-col pe-edit">
+                  <div class="fm-grid">
+                    <label class="fm-item span2"><span>标题</span><input type="text" id="fmTitle" placeholder="今天写什么"></label>
+                    <label class="fm-item"><span>日期</span><input type="date" id="fmDate"></label>
+                    <label class="fm-item"><span>栏目</span>
+                      <select id="fmType">
+                        <option value="note">笔记</option>
+                        <option value="life">生活</option>
+                        <option value="read">读书</option>
+                      </select>
+                    </label>
+                    <label class="fm-item"><span>分类</span><input type="text" id="fmCat" placeholder="笔记 / 生活 / 读书"></label>
+                    <label class="fm-item"><span>标签</span><input type="text" id="fmTags" placeholder="用逗号隔开"></label>
+                    <label class="fm-item span2"><span>摘要</span><input type="text" id="fmDesc" placeholder="一句话说清这篇讲什么"></label>
+                  </div>
+
+                  <div class="md-bar" id="mdBar">
+                    <button type="button" data-md="bold" title="加粗"><b>B</b></button>
+                    <button type="button" data-md="italic" title="斜体"><i>I</i></button>
+                    <button type="button" data-md="strike" title="删除线"><s>S</s></button>
+                    <button type="button" data-md="mark" title="高亮">==</button>
+                    <span class="md-sep"></span>
+                    <button type="button" data-md="h2" title="二级标题">H2</button>
+                    <button type="button" data-md="h3" title="三级标题">H3</button>
+                    <span class="md-sep"></span>
+                    <button type="button" data-md="link" title="链接">链</button>
+                    <button type="button" data-md="image" title="插图">图</button>
+                    <button type="button" data-md="code" title="行内代码">&lt;&gt;</button>
+                    <button type="button" data-md="codeblock" title="代码块">{ }</button>
+                    <span class="md-sep"></span>
+                    <button type="button" data-md="quote" title="引用">❝</button>
+                    <button type="button" data-md="ul" title="无序列表">•</button>
+                    <button type="button" data-md="ol" title="有序列表">1.</button>
+                    <button type="button" data-md="task" title="待办">☑</button>
+                    <button type="button" data-md="table" title="表格">▦</button>
+                    <button type="button" data-md="hr" title="分割线">—</button>
+                  </div>
+
+                  <textarea class="md-input" id="mdInput" placeholder="正文用 Markdown 写……&#10;&#10;⌘S 保存 · 自动存本地草稿" spellcheck="false"></textarea>
+
+                  <div class="md-foot">
+                    <span id="mdCount">0 字 · 约 1 分钟读完</span>
+                    <span class="draft-flag" id="mdDraft" hidden>草稿已存本机</span>
+                  </div>
+                </div>
+
+                <div class="pe-col pe-preview" id="pePreviewPane" hidden>
+                  <div class="pv-head">预览<button class="pv-x" id="pvClose" type="button" aria-label="关闭">✕</button></div>
+                  <article class="pv-body" id="pvBody"></article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 统计 ==================== -->
+      <section class="st-pane" id="pane-stats">
+        <div class="pane-head">
+          <div>
+            <h2>看数</h2>
+            <p class="pane-sub">从站内索引实时算的，不连 Token 也能看</p>
+          </div>
+          <div class="pane-head-act">
+            <button class="st-btn ghost" id="statsRefresh" type="button">重算</button>
+          </div>
+        </div>
+
+        <div class="stat-mini wide" id="statsCards"></div>
+
+        <div class="st-card">
+          <div class="card-title">写作日历 <span class="card-hint">近 26 周 · 每格一天</span></div>
+          <div class="heat-wrap">
+            <div class="heat-month" id="heatMonth"></div>
+            <div class="heat-body">
+              <div class="heat-weekday"><i>一</i><i>三</i><i>五</i><i>日</i></div>
+              <div class="heat-grid" id="heatGrid"></div>
+            </div>
+          </div>
+          <div class="heat-legend">
+            <span>少</span><i class="h0"></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i><span>多</span>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="st-card">
+            <div class="card-title">字数排行</div>
+            <table class="st-table" id="statsTable">
+              <thead><tr><th>#</th><th>标题</th><th>日期</th><th class="ta-r">字</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="st-card">
+            <div class="card-title">栏目与标签</div>
+            <div class="bar-list" id="statsBars"></div>
+          </div>
+        </div>
+
+        <div class="st-card">
+          <div class="card-title">健康检查 <span class="card-hint">点一下重新扫</span></div>
+          <div class="health-list" id="healthList"></div>
+          <button class="st-btn ghost sm" id="healthRun" type="button" style="margin-top:14px">重新检查</button>
+        </div>
+      </section>
+
+      <!-- ==================== 媒体 ==================== -->
+      <section class="st-pane" id="pane-media">
+        <div class="pane-head">
+          <div>
+            <h2>影像</h2>
+            <p class="pane-sub"><code>assets/img/uploads/</code> 下的图片，传完可直接插进文章</p>
+          </div>
+        </div>
+
+        <div class="st-card">
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="uploadInput" accept="image/*" multiple hidden>
+            <svg viewBox="0 0 24 24"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+            <p><b>点这里选图</b>，或者把图拖进来</p>
+            <p class="upload-dim">PNG / JPG / WebP / SVG · 超过 600KB 会自动压一压</p>
+          </div>
+          <div class="upload-progress" id="uploadProgress" hidden>
+            <div class="up-bar"><i id="upBar"></i></div>
+            <span id="upText">上传中…</span>
+          </div>
+        </div>
+
+        <div class="media-grid" id="mediaGrid"></div>
+        <p class="media-empty" id="mediaEmpty" hidden>还没有图。连上 Token 就能看到这里。</p>
+      </section>
+
+      <!-- ==================== 设置 ==================== -->
+      <section class="st-pane" id="pane-settings">
+        <div class="pane-head">
+          <div>
+            <h2>巢务</h2>
+            <p class="pane-sub">改的是 <code>_data/</code> 里的 YAML，保存即提交</p>
+          </div>
+        </div>
+
+        <div class="settings-layout">
+          <nav class="set-nav" id="setNav">
+            <button class="set-nav-btn is-on" data-set="announce" type="button">公告栏</button>
+            <button class="set-nav-btn" data-set="now" type="button">此刻</button>
+            <button class="set-nav-btn" data-set="social" type="button">社交</button>
+            <button class="set-nav-btn" data-set="friends" type="button">友链</button>
+            <button class="set-nav-btn" data-set="murmur" type="button">碎语</button>
+            <button class="set-nav-btn" data-set="quotes" type="button">今日一句</button>
+            <button class="set-nav-btn" data-set="password" type="button">访问密码</button>
+          </nav>
+          <div class="set-body" id="setBody">
+            <p class="set-loading">先连上 Token，才能读这些文件。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== 发布 ==================== -->
+      <section class="st-pane" id="pane-deploy">
+        <div class="pane-head">
+          <div>
+            <h2>放飞</h2>
+            <p class="pane-sub">提交到 <code>main</code> 后 GitHub Pages 会自动构建，一般 1-3 分钟</p>
+          </div>
+        </div>
+
+        <div class="st-card">
+          <div class="card-title">最新构建</div>
+          <div id="buildInfo"><p class="dim">连接 Token 后显示。</p></div>
+          <div class="build-acts">
+            <button class="st-btn primary sm" id="buildTrigger" type="button">请求重新构建</button>
+            <button class="st-btn ghost sm" id="buildRefresh" type="button">刷新</button>
+            <a class="st-btn ghost sm" href="{{ '/' | relative_url }}" target="_blank" rel="noopener">打开站点</a>
+          </div>
+        </div>
+
+        <div class="st-card">
+          <div class="card-title">最近提交</div>
+          <ul class="commit-list" id="commitList"><li class="dim">连接 Token 后显示。</li></ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- 通用弹窗 -->
+<div class="st-modal" id="stModal" hidden>
+  <div class="sm-panel">
+    <div class="sm-head"><h3 id="modalTitle">确认</h3><button class="sm-x" id="modalClose" type="button" aria-label="关闭">✕</button></div>
+    <div class="sm-body" id="modalBody"></div>
+    <div class="sm-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<!-- 命令面板 -->
+<div class="st-cmd" id="stCmd" hidden>
+  <div class="cmd-box">
+    <div class="cmd-field">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <input id="cmdInput" type="text" placeholder="跳到哪个地方，或者做什么…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
+    </div>
+    <ul class="cmd-list" id="cmdList"></ul>
+  </div>
+</div>
+
+<div class="st-toast" id="stToast" role="status" aria-live="polite"></div>
+
+<script>
+window.WB = {
+  repo: "{{ site.data.workbench.repo }}",
+  branch: "{{ site.data.workbench.branch }}",
+  postsDir: "{{ site.data.workbench.posts_dir }}",
+  mediaDir: "{{ site.data.workbench.media_dir }}",
+  passwordSha256: "{{ site.data.workbench.password_sha256 }}",
+  dailyGoal: {{ site.data.workbench.daily_goal | default: 800 }},
+  tokenHelp: {{ site.data.workbench.token_help | jsonify }},
+  defaults: {
+    categories: "{{ site.data.workbench.new_post_defaults.categories }}",
+    tags: "{{ site.data.workbench.new_post_defaults.tags }}",
+    description: "{{ site.data.workbench.new_post_defaults.description }}",
+    type: "{{ site.data.workbench.new_post_defaults.type }}"
+  },
+  base: "{{ site.baseurl }}"
+};
+</script>
+<script src="{{ '/assets/js/md.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/workbench.js' | relative_url }}"></script>
+</body>
+</html>

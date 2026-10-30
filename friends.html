@@ -1,0 +1,46 @@
+---
+layout: page
+title: 友链
+description: 一些我常去的角落。世界很大，先认识几个邻居。
+permalink: /friends/
+wide: true
+count_text: 不定期更新
+---
+
+<div class="flink-grid">
+  {% for f in site.data.friends %}
+  <a class="flink reveal" href="{{ f.url }}" target="_blank" rel="noopener" data-tint="{{ f.tint | default: 'blue' }}">
+    <span class="flink-avatar" aria-hidden="true">{{ f.name | slice: 0, 1 }}</span>
+    <span class="flink-main">
+      <b>{{ f.name }}</b>
+      <em>{{ f.url | remove_first: 'https://' | remove_first: 'http://' | split: '/' | first }}</em>
+      <span class="flink-desc">{{ f.desc }}</span>
+    </span>
+    <svg class="flink-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+  </a>
+  {% endfor %}
+</div>
+
+<section class="flink-exchange">
+  <h2>换一枚友链？</h2>
+  <p>如果你也在写东西，欢迎来换。留言或者提 issue 都行，我一般两三天内回。</p>
+  <div class="flink-rule">
+    <div>
+      <h4>希望你是</h4>
+      <ul>
+        <li>有原创内容，能持续更新</li>
+        <li>站点能正常访问，没有乱七八糟的弹窗</li>
+        <li>内容不涉及违法违规</li>
+      </ul>
+    </div>
+    <div>
+      <h4>我这边</h4>
+      <dl class="flink-meta">
+        <dt>名称</dt><dd>{{ site.owner.name }}的檐下笔记</dd>
+        <dt>链接</dt><dd><code>{{ site.url }}</code></dd>
+        <dt>描述</dt><dd>{{ site.description | truncate: 40 }}</dd>
+      </dl>
+    </div>
+  </div>
+  <a class="flink-btn" href="{{ '/guestbook/' | relative_url }}">去留言板说一声 →</a>
+</section>

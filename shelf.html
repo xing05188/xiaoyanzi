@@ -1,0 +1,76 @@
+---
+layout: page
+title: 书架
+description: 正在读的、读完的、想读的。进度条是真的，笔记是真的，读不完也是真的。
+permalink: /shelf/
+wide: true
+count_text: 每月更新一次
+---
+
+{% assign reading = site.data.shelf.reading %}
+{% assign done = site.data.shelf.done %}
+{% assign want = site.data.shelf.want %}
+
+<div class="shelf-sum">
+  <div class="shelf-sum__cell">
+    <b>{{ reading.size }}</b><span>本在读</span>
+  </div>
+  <div class="shelf-sum__cell">
+    <b>{{ done.size }}</b><span>本读完</span>
+  </div>
+  <div class="shelf-sum__cell">
+    <b>{{ want.size }}</b><span>本想读</span>
+  </div>
+  <p class="shelf-sum__note">读书这件事，我向来慢。<br>但慢慢读，也是读。</p>
+</div>
+
+<h2 class="shelf-title" id="reading">正在读<span>手上的三本</span></h2>
+<div class="shelf-reading">
+  {% for b in reading %}
+  <article class="book book--row reveal" data-tint="{{ b.tint | default: 'blue' }}">
+    <span class="book-spine" aria-hidden="true"><i></i></span>
+    <div class="book-main">
+      <h3>{{ b.title }}</h3>
+      <p class="book-author">{{ b.author }}{% if b.started %}<i>· {{ b.started | date: '%Y.%m' }} 开读</i>{% endif %}</p>
+      <p class="book-note">{{ b.note }}</p>
+      <div class="book-progress">
+        <div class="bp-track"><i style="--p: {{ b.progress }}%"></i></div>
+        <span class="bp-num">{{ b.progress }}<small>%</small></span>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+<h2 class="shelf-title" id="done">读完了<span>这几本值得再说一遍</span></h2>
+<div class="shelf-done">
+  {% for b in done %}
+  <article class="book book--tile reveal" data-tint="{{ b.tint | default: 'green' }}">
+    <div class="book-top">
+      <span class="book-dot" aria-hidden="true"></span>
+      <span class="book-stars" aria-label="评分 {{ b.rating }}">{% for i in (1..5) %}<svg class="{% if i <= b.rating %}on{% endif %}" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.6 6 .7-4.4 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.4 9.8l6-.7z"/></svg>{% endfor %}</span>
+    </div>
+    <h3>{{ b.title }}</h3>
+    <p class="book-author">{{ b.author }}</p>
+    <p class="book-note">{{ b.note }}</p>
+    <p class="book-when">读完于 {{ b.finished | date: '%Y.%m.%d' }}</p>
+  </article>
+  {% endfor %}
+</div>
+
+<h2 class="shelf-title" id="want">想读<span>欠着的书债</span></h2>
+<ul class="shelf-want">
+  {% for b in want %}
+  <li class="want-item reveal">
+    <span class="want-o" aria-hidden="true"></span>
+    <b>{{ b.title }}</b>
+    <em>{{ b.author }}</em>
+    <span class="want-note">{{ b.note }}</span>
+  </li>
+  {% endfor %}
+</ul>
+
+<blockquote class="shelf-quote">
+  买书如山倒，读书如抽丝。<br>
+  <cite>—— 每次搬家都想起这句话</cite>
+</blockquote>

@@ -1,0 +1,61 @@
+---
+layout: page
+title: 碎语
+description: 比文章短，比想法长。风吹过屋檐时顺手记下的几句。
+permalink: /murmur/
+wide: true
+count_text: 边走边记，不排版
+---
+
+{% assign ms = site.data.murmurs %}
+{% assign all_tags = "" | split: "" %}
+{% for m in ms %}{% for t in m.tags %}{% unless all_tags contains t %}{% assign all_tags = all_tags | push: t %}{% endunless %}{% endfor %}{% endfor %}
+
+<div class="murmur-bar">
+  <div class="filter-bar" id="murmurFilter">
+    <button class="filter-btn is-on" type="button" data-tag="*">全部</button>
+    {% for t in all_tags %}
+    <button class="filter-btn" type="button" data-tag="{{ t }}">{{ t }}</button>
+    {% endfor %}
+  </div>
+  <span class="murmur-count">{{ ms.size }} 条</span>
+</div>
+
+<div class="murmur-stream" id="murmurStream">
+  <span class="murmur-wire" aria-hidden="true"></span>
+  <span class="murmur-bird" aria-hidden="true">
+    <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+  </span>
+
+  {% for m in ms %}
+  {% assign d = m.date | split: ' ' %}
+  <article class="murmur reveal" data-tags="{{ m.tags | join: '|' }}" data-date="{{ m.date }}">
+    <span class="murmur-node" aria-hidden="true"></span>
+    <div class="murmur-body">
+      <header class="murmur-head">
+        <time datetime="{{ m.date }}">{{ d[0] | date: '%m.%d' }}<i>{{ d[1] }}</i></time>
+        {% case m.mood %}
+          {% when 'joy' %}<span class="mood mood--joy">开心</span>
+          {% when 'think' %}<span class="mood mood--think">在想</span>
+          {% when 'tired' %}<span class="mood mood--tired">累</span>
+          {% else %}<span class="mood mood--calm">平静</span>
+        {% endcase %}
+      </header>
+      <p class="murmur-text">{{ m.text }}</p>
+      <footer class="murmur-foot">
+        <span class="murmur-tags">
+          {% for t in m.tags %}<a href="#{{ t }}" class="mini-tag" data-jump="{{ t }}">#{{ t }}</a>{% endfor %}
+        </span>
+        <button class="murmur-like" type="button" data-key="{{ m.date }}" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.2A4.1 4.1 0 0 1 12 8a4.1 4.1 0 0 1 7 2.8C19 15.6 12 20 12 20z"/></svg>
+          <b>0</b>
+        </button>
+      </footer>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+<div class="murmur-end" aria-hidden="true">
+  <span>到此为止，剩下的还没发生</span>
+</div>

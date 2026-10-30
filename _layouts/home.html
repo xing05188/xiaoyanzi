@@ -30,6 +30,15 @@ body_class: home
 
   <div class="wrap">
     <div class="hero-inner">
+      {% assign nt = site.data.settings.announcement %}
+      {% if nt.show and nt.text %}
+      <a class="notice-strip" href="{{ nt.link | default: '/about/' | relative_url }}">
+        <span class="notice-dot" aria-hidden="true"></span>
+        <span class="notice-text">{{ nt.text }}</span>
+        {% if nt.link_text %}<em>{{ nt.link_text }} →</em>{% endif %}
+      </a>
+      {% endif %}
+
       <p class="hero-eyebrow">{{ site.owner.school }} · {{ site.owner.city }}</p>
 
       <h1 class="hero-title">把日子，<br><em>一片片衔回来</em>。</h1>
@@ -58,6 +67,21 @@ body_class: home
     </div>
   </div>
 </section>
+
+{% if site.data.settings.now %}
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="now-card reveal">
+      <span class="now-card__dot" aria-hidden="true"></span>
+      {% assign nw = site.data.settings.now %}
+      {% if nw.doing %}<span>在做：<b>{{ nw.doing }}</b></span>{% endif %}
+      {% if nw.reading %}<span>在读：<b>{{ nw.reading }}</b></span>{% endif %}
+      {% if nw.listening %}<span>在听：<b>{{ nw.listening }}</b></span>{% endif %}
+      <em>{{ nw.updated | date: '%m 月 %d 日' }} 更新</em>
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <!-- ======================== 新衔来的 ======================== -->
 <section class="section">
@@ -200,10 +224,18 @@ body_class: home
 <!-- ======================== 引文 ======================== -->
 <section class="section">
   <div class="wrap">
-    <div class="quote-band reveal">
+    <div class="quote-band reveal" id="quoteBand">
       <svg class="q-bird" viewBox="22 0 96 70" aria-hidden="true"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
-      <blockquote>无可奈何花落去，似曾相识燕归来。</blockquote>
-      <cite>晏殊《浣溪沙》</cite>
+      <blockquote id="quoteText">无可奈何花落去，似曾相识燕归来。</blockquote>
+      <cite id="quoteFrom">晏殊《浣溪沙》</cite>
+      <button class="quote-next" id="quoteNext" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9a8 8 0 0 1 13.6-4.6L20 7M20 15a8 8 0 0 1-13.6 4.6L4 17"/><path d="M20 3v4h-4M4 21v-4h4"/></svg>
+        换一句
+      </button>
     </div>
   </div>
 </section>
+
+<script id="quoteData" type="application/json">
+[{% for q in site.data.quotes %}{"t":{{ q.text | jsonify }},"f":{{ q.from | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+</script>

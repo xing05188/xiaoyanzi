@@ -1,0 +1,24 @@
+---
+layout: page
+title: 我收着的东西
+description: 在这台设备上点过「收着」的文章。换设备就没了，算是私人的小抽屉。
+permalink: /saved/
+wide: true
+count_text: 只存在本机
+---
+
+<div class="saved-head">
+  <p class="saved-hint">
+    读到一半被打断的时候，点一下文章右上角的「收着」，它就会落到这里。
+    数据存在浏览器里，清理缓存会一起清掉。
+  </p>
+  <button class="saved-clear" id="savedClear" type="button" hidden>全部清掉</button>
+</div>
+
+<div class="saved-list" id="savedList"></div>
+
+<div class="saved-empty" id="savedEmpty" hidden>
+  <svg viewBox="22 0 96 70" aria-hidden="true"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+  <p>抽屉是空的。</p>
+  <a href="{{ '/notes/' | relative_url }}">去笔记里转转 →</a>
+</div>
