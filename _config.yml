@@ -33,15 +33,25 @@ owner:
   since: 2026-03-20
 
 # ---------- 导航 ----------
+# 所有页面入口都列在这里，顺序＝显示顺序。
+# 顶部一行放不下的部分会自动收进最后的「更多」下拉里；
+# nav_max 控制最多在主栏显示几项（超过就折叠），nav_more_title 是下拉的小标题。
+nav_max: 9
+nav_more_title: 屋檐下还有
 nav:
-  - { name: 首页, url: "/" }
-  - { name: 笔记, url: "/notes/" }
-  - { name: 生活, url: "/life/" }
-  - { name: 碎语, url: "/murmur/" }
-  - { name: 书架, url: "/shelf/" }
-  - { name: 归档, url: "/archive/" }
-  - { name: 标签, url: "/tags/" }
-  - { name: 关于, url: "/about/" }
+  - { name: 首页, url: "/", desc: "回到檐下，看看最近" }
+  - { name: 笔记, url: "/notes/", desc: "课程、代码与学习记录" }
+  - { name: 生活, url: "/life/", desc: "南昌的四季和日常" }
+  - { name: 碎语, url: "/murmur/", desc: "一句话的念头" }
+  - { name: 书架, url: "/shelf/", desc: "在读、读过与想读" }
+  - { name: 关于, url: "/about/", desc: "关于小燕子" }
+  - { name: 归档, url: "/archive/", desc: "按时间翻全部文章" }
+  - { name: 标签, url: "/tags/", desc: "从一个词找到一片文章" }
+  - { name: 友链, url: "/friends/", desc: "认识的朋友们" }
+  - { name: 留言, url: "/guestbook/", desc: "在墙上留一句话" }
+  - { name: 收藏, url: "/saved/", desc: "本机收藏夹" }
+  - { name: 搜索, url: "/search/", desc: "全站检索一篇文章" }
+  - { name: 工作台, url: "/studio/", desc: "写文章、改设置的后台" }
 
 # ---------- 留言板（giscus，可选） ----------
 # 想收到真留言：去 https://giscus.app/zh-CN 授权仓库，把下面几项填上，

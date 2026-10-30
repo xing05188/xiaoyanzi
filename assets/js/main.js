@@ -90,6 +90,134 @@
     });
   }
 
+  /* ---------------- 导航：放不下的收进「更多」 ---------------- */
+  var navMain = $('#navMain');
+  var navMore = $('#navMore');
+  var navMoreBtn = $('#navMoreBtn');
+  var navMorePanel = $('#navMorePanel');
+  var navMoreGrid = $('#navMoreGrid');
+
+  if (nav && navMain && navMore && navMoreBtn && navMoreGrid) {
+    var navItems = $$('[data-nav-item]', navMain);
+    var navMax = parseInt(nav.getAttribute('data-nav-max'), 10) || 9;
+    var navCompact = window.matchMedia('(max-width: 760px)');
+    var navTimer = 0;
+
+    function navIsOpen() { return navMore.classList.contains('is-open'); }
+
+    function closeMore(focusBack) {
+      if (!navIsOpen()) return;
+      navMore.classList.remove('is-open');
+      navMoreBtn.setAttribute('aria-expanded', 'false');
+      if (focusBack) navMoreBtn.focus({ preventScroll: true });
+    }
+
+    // 全部归位（保持配置顺序），再按可用宽度把溢出的搬进面板
+    function layoutNav() {
+      navTimer = 0;
+
+      for (var i = 0; i < navItems.length; i++) navMain.appendChild(navItems[i]);
+
+      if (navCompact.matches) {
+        navMore.hidden = true;
+        closeMore();
+        return;
+      }
+
+      navMore.hidden = false;
+
+      var gap = 4;
+      var avail = nav.clientWidth;
+      var moreW = navMoreBtn.offsetWidth + 6 + 2;
+      var used = 0;
+      var keep = 0;
+
+      for (var j = 0; j < navItems.length; j++) {
+        if (j >= navMax) break;
+        var rest = navItems.length - j - 1;
+        var reserve = rest > 0 ? moreW : 0;
+        var w = navItems[j].offsetWidth + gap;
+        if (used + w + reserve > avail) break;
+        used += w;
+        keep = j + 1;
+      }
+      if (keep < 1) keep = 1;
+
+      if (keep >= navItems.length) {
+        navMoreGrid.textContent = '';
+        navMore.hidden = true;
+        closeMore();
+        return;
+      }
+
+      navMoreGrid.textContent = '';
+      for (var k = keep; k < navItems.length; k++) {
+        navMoreGrid.appendChild(navItems[k]);
+      }
+
+      // 项数少时收成单列，面板不至于空一半
+      var over = navItems.length - keep;
+      navMorePanel.classList.toggle('is-single', over <= 5);
+      navMoreGrid.classList.toggle('is-single', over <= 5);
+
+      navMore.classList.toggle('has-active', !!navMoreGrid.querySelector('.is-active'));
+    }
+
+    function scheduleLayout() {
+      if (navTimer) return;
+      navTimer = setTimeout(layoutNav, 80);
+    }
+
+    navMoreBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !navIsOpen();
+      navMore.classList.toggle('is-open', open);
+      navMoreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        var focusTarget = navMoreGrid.querySelector('.is-active') || navMoreGrid.querySelector('.nav-link');
+        if (focusTarget) focusTarget.focus({ preventScroll: true });
+      }
+    });
+
+    navMorePanel.addEventListener('click', function (e) {
+      if (e.target.closest('.nav-link')) closeMore();
+    });
+
+    doc.addEventListener('click', function (e) {
+      if (navIsOpen() && !navMore.contains(e.target)) closeMore();
+    });
+
+    doc.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMore(true);
+    });
+
+    // 面板内上下键换焦点
+    navMorePanel.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      var links = $$('.nav-link', navMoreGrid);
+      if (!links.length) return;
+      e.preventDefault();
+      var idx = links.indexOf(doc.activeElement);
+      var next = e.key === 'ArrowDown'
+        ? (idx + 1) % links.length
+        : (idx <= 0 ? links.length - 1 : idx - 1);
+      links[next].focus();
+    });
+
+    if (navCompact.addEventListener) navCompact.addEventListener('change', layoutNav);
+    else if (navCompact.addListener) navCompact.addListener(layoutNav);
+
+    if (window.ResizeObserver) {
+      new ResizeObserver(scheduleLayout).observe(nav);
+    } else {
+      window.addEventListener('resize', scheduleLayout);
+    }
+    window.addEventListener('orientationchange', scheduleLayout);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(layoutNav, function () {});
+
+    layoutNav();
+  }
+
   /* ---------------- 滚动显现 ---------------- */
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {

@@ -14,21 +14,46 @@
       </span>
     </a>
 
-    <nav class="nav" id="siteNav" aria-label="主导航">
+    {% comment %} 文章页也点亮所属栏目：type -> 栏目地址 {% endcomment %}
+    {% assign nav_here = page.url %}
+    {% if page.type == 'note' %}{% assign nav_here = '/notes/' %}{% endif %}
+    {% if page.type == 'life' %}{% assign nav_here = '/life/' %}{% endif %}
+    {% if page.type == 'read' %}{% assign nav_here = '/shelf/' %}{% endif %}
+
+    <nav class="nav" id="siteNav" aria-label="主导航" data-nav-max="{{ site.nav_max | default: 9 }}">
       <span class="nav-wire" aria-hidden="true"></span>
-      {% for item in site.nav %}
-        {% assign active = '' %}
-        {% if page.url == item.url %}{% assign active = ' is-active' %}{% endif %}
-        <a class="nav-link{{ active }}" href="{{ item.url | relative_url }}">
-          <span class="nav-bird" aria-hidden="true">
-            <svg viewBox="22 0 96 70">
-              <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
-              <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
-            </svg>
-          </span>
-          <span class="nav-text">{{ item.name }}</span>
-        </a>
-      {% endfor %}
+
+      <div class="nav-main" id="navMain">
+        {% for item in site.nav %}
+          {% assign active = '' %}
+          {% if nav_here == item.url %}{% assign active = ' is-active' %}{% endif %}
+          <a class="nav-link{{ active }}" data-nav-item href="{{ item.url | relative_url }}"{% if nav_here == item.url %} aria-current="page"{% endif %}>
+            <span class="nav-bird" aria-hidden="true">
+              <svg viewBox="22 0 96 70">
+                <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+                <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+              </svg>
+            </span>
+            <span class="nav-text">{{ item.name }}</span>
+            {% if item.desc %}<span class="nav-desc">{{ item.desc }}</span>{% endif %}
+          </a>
+        {% endfor %}
+      </div>
+
+      <div class="nav-more" id="navMore" hidden>
+        <button class="nav-link nav-more__btn" id="navMoreBtn" type="button"
+                aria-expanded="false" aria-controls="navMorePanel" aria-haspopup="true">
+          <span class="nav-text">更多</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="m2.8 4.6 3.2 3.2 3.2-3.2"/></svg>
+        </button>
+        <div class="nav-more__panel" id="navMorePanel">
+          <p class="nav-more__label">
+            <span class="nav-more__tick" aria-hidden="true"></span>
+            {{ site.nav_more_title | default: "屋檐下还有" }}
+          </p>
+          <div class="nav-more__grid" id="navMoreGrid"></div>
+        </div>
+      </div>
     </nav>
 
     <div class="header-tools">
