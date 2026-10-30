@@ -602,19 +602,41 @@
 
   function fetchRaw(path) {
     if (S.bodies[path] != null) return Promise.resolve(S.bodies[path]);
-    var url = API + '/repos/' + cfg.repo + '/contents/' + encodeURI(path) + '?ref=' + cfg.branch;
-    var headers = { 'Accept': 'application/vnd.github+json' };
-    if (S.token) headers['Authorization'] = 'Bearer ' + S.token;
-    return fetch(url, { headers: headers, cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.status === 403 ? '匿名额度用完了，连上 Token 更快' : 'HTTP ' + r.status);
+
+    function viaApi() {
+      var url = API + '/repos/' + cfg.repo + '/contents/' + encodeURI(path) + '?ref=' + cfg.branch;
+      var headers = { 'Accept': 'application/vnd.github+json' };
+      if (S.token) headers['Authorization'] = 'Bearer ' + S.token;
+      return fetch(url, { headers: headers, cache: 'no-store' }).then(function (r) {
+        if (!r.ok) {
+          throw new Error(r.status === 403 ? '匿名额度用完了，连上 Token 就能继续' : 'HTTP ' + r.status);
+        }
         return r.json();
-      })
-      .then(function (d) {
-        var t = b64dec(d.content || '');
-        S.bodies[path] = t;
-        return t;
-      });
+      }).then(function (d) { return b64dec(d.content || ''); });
+    }
+
+    var chain;
+    if (S.token) {
+      chain = viaApi();
+    } else {
+      // 没连 Token 时先走 raw（无每小时配额），拿不到再退回 API
+      var rawUrl = RAW + cfg.repo + '/' + cfg.branch + '/' +
+        path.split('/').map(encodeURIComponent).join('/');
+      var ctl = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+      chain = fetch(rawUrl, { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+        .then(function (r) {
+          clearTimeout(timer);
+          if (!r.ok) throw new Error('raw ' + r.status);
+          return r.text();
+        })
+        .catch(function () { clearTimeout(timer); return viaApi(); });
+    }
+
+    return chain.then(function (txt) {
+      S.bodies[path] = txt;
+      return txt;
+    });
   }
 
   function parseFront(text) {
@@ -672,7 +694,7 @@
     }).catch(function (e) {
       // 没有原文时退回元数据（只读预览）
       S.current = { path: path, fm: {}, body: '', meta: meta, readonly: true };
-      $('#mdInput').value = '（原文读取失败：' + e.message + '）\n\n可以先连 Token 再试。';
+      $('#mdInput').value = '（原文没取到：' + e.message + '）\n\n连上 Token 之后一定能读到。';
       setFlag('读取失败', '');
     });
   }
