@@ -87,10 +87,11 @@
   top: 12%;
   width: 168px;
   color: var(--accent);
-  opacity: .07;
+  opacity: .06;
   z-index: 1;
 }
 .post-head__bird path { fill: currentColor; }
+html[data-resolved="dark"] .post-head__bird { opacity: .045; }
 
 /* ---------------- 布局 ---------------- */
 .post-shell {

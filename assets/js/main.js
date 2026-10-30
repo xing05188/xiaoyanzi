@@ -108,6 +108,8 @@
   var input = $('#searchInput');
   var resultsBox = $('#searchResults');
   var searchData = null;
+  var searchLoading = false;
+  var pendingQuery = '';
   var cursor = -1;
   var current = [];
 
@@ -117,6 +119,7 @@
     panel.setAttribute('aria-hidden', 'false');
     doc.body.style.overflow = 'hidden';
     if (input) { input.value = ''; input.focus(); }
+    pendingQuery = '';
     renderResults([]);
     loadData();
   }
@@ -129,11 +132,23 @@
   }
 
   function loadData() {
-    if (searchData) return;
+    if (searchData || searchLoading) return;
+    searchLoading = true;
+    if (resultsBox && !searchData) {
+      resultsBox.innerHTML = '<p class="search-hint">正在翻箱倒柜…</p>';
+    }
     fetch((window.YY_BASE || '') + '/search.json')
       .then(function (r) { return r.json(); })
-      .then(function (data) { searchData = data; })
+      .then(function (data) {
+        searchData = data;
+        searchLoading = false;
+        if (pendingQuery) doSearch(pendingQuery);
+        else if (resultsBox && resultsBox.querySelector('.search-hint')) {
+          resultsBox.innerHTML = '<p class="search-hint">输入关键词，回车跳到第一条结果</p>';
+        }
+      })
       .catch(function () {
+        searchLoading = false;
         if (resultsBox) resultsBox.innerHTML = '<p class="search-hint">搜索索引没加载出来，刷新一下试试。</p>';
       });
   }
@@ -176,8 +191,8 @@
   }
 
   function doSearch(q) {
-    if (!searchData) return;
-    q = q.trim();
+    q = (q || '').trim();
+    if (!searchData) { pendingQuery = q; loadData(); return; }
     if (!q) { renderResults([]); return; }
     var terms = q.toLowerCase().split(/\s+/).filter(Boolean);
     var scored = [];
