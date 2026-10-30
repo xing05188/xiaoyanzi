@@ -619,18 +619,19 @@
     if (S.token) {
       chain = viaApi();
     } else {
-      // 没连 Token 时先走 raw（无每小时配额），拿不到再退回 API
+      // 没连 Token：先走 API（国内通常可达），被限流了再退回 raw
       var rawUrl = RAW + cfg.repo + '/' + cfg.branch + '/' +
         path.split('/').map(encodeURIComponent).join('/');
       var ctl = window.AbortController ? new AbortController() : null;
       var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
-      chain = fetch(rawUrl, { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
-        .then(function (r) {
-          clearTimeout(timer);
-          if (!r.ok) throw new Error('raw ' + r.status);
-          return r.text();
-        })
-        .catch(function () { clearTimeout(timer); return viaApi(); });
+      chain = viaApi().catch(function () {
+        return fetch(rawUrl, { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+          .then(function (r) {
+            clearTimeout(timer);
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+          });
+      });
     }
 
     return chain.then(function (txt) {
