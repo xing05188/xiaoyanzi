@@ -1,0 +1,31 @@
+---
+layout: page
+title: 搜索
+description: 全站文字都在这里，输入关键词就能找。
+permalink: /search/
+---
+
+<p>点下面的按钮，或者随时按 <kbd>/</kbd> 或 <kbd>⌘</kbd>+<kbd>K</kbd> 打开搜索框。</p>
+
+<p>
+  <button class="btn btn-primary" type="button" data-open-search>
+    打开搜索
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+  </button>
+</p>
+
+<h2>能搜到什么</h2>
+
+<ul>
+  <li>标题、摘要、标签、正文全文，都会参与匹配</li>
+  <li>多个关键词用空格分开，比如「Python 笔记」</li>
+  <li>按相关度排序：标题命中 &gt; 标签命中 &gt; 摘要命中 &gt; 正文命中</li>
+</ul>
+
+<h2>也可以换个方式逛</h2>
+
+<ul>
+  <li><a href="{{ '/archive/' | relative_url }}">归档</a> —— 按时间从新到旧</li>
+  <li><a href="{{ '/tags/' | relative_url }}">标签</a> —— 按话题分组</li>
+  <li><a href="{{ '/notes/' | relative_url }}">笔记</a> 与 <a href="{{ '/life/' | relative_url }}">生活</a> —— 两条主干</li>
+</ul>

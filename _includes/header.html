@@ -1,0 +1,75 @@
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+
+    <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="22 0 96 70" class="brand-bird">
+          <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+          <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>{{ site.title }}</strong>
+        <em>XIAO YAN ZI</em>
+      </span>
+    </a>
+
+    <nav class="nav" id="siteNav" aria-label="主导航">
+      <span class="nav-wire" aria-hidden="true"></span>
+      {% for item in site.nav %}
+        {% assign active = '' %}
+        {% if page.url == item.url %}{% assign active = ' is-active' %}{% endif %}
+        <a class="nav-link{{ active }}" href="{{ item.url | relative_url }}">
+          <span class="nav-bird" aria-hidden="true">
+            <svg viewBox="22 0 96 70">
+              <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+              <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+            </svg>
+          </span>
+          <span class="nav-text">{{ item.name }}</span>
+        </a>
+      {% endfor %}
+    </nav>
+
+    <div class="header-tools">
+      <button class="icon-btn" id="searchOpen" type="button" aria-label="搜索" title="搜索（/ 或 ⌘K）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      </button>
+
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="切换配色" title="日 / 夜">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/>
+        </svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.7 8.7 0 1 0 11.1 11.1z"/>
+        </svg>
+      </button>
+
+      <button class="icon-btn menu-btn" id="menuToggle" type="button" aria-label="菜单" aria-expanded="false" aria-controls="siteNav">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- 搜索面板 -->
+<div class="search-panel" id="searchPanel" aria-hidden="true">
+  <div class="search-panel__backdrop" data-close-search></div>
+  <div class="search-box" role="dialog" aria-modal="true" aria-label="站内搜索">
+    <div class="search-box__field">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <input id="searchInput" type="search" placeholder="搜笔记、生活、标签…" autocomplete="off" spellcheck="false">
+      <kbd class="search-esc">ESC</kbd>
+    </div>
+    <div class="search-box__body" id="searchResults">
+      <p class="search-hint">输入关键词，回车跳到第一条结果</p>
+    </div>
+    <div class="search-box__foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> 选择</span>
+      <span><kbd>↵</kbd> 打开</span>
+      <span><kbd>esc</kbd> 关闭</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eaf2f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1a22" media="(prefers-color-scheme: dark)">
+
+{% if page.title %}
+  {% assign page_title = page.title | append: " · " | append: site.title %}
+{% elsif page.layout == "home" %}
+  {% assign page_title = site.title | append: " · " | append: site.subtitle %}
+{% else %}
+  {% assign page_title = site.title %}
+{% endif %}
+
+{% assign page_desc = page.description | default: page.summary | default: site.description %}
+{% assign page_url = page.url | absolute_url %}
+
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_desc | strip_html | strip_newlines | truncate: 150 }}">
+<meta name="author" content="{{ site.owner.name }}">
+<link rel="canonical" href="{{ page_url }}">
+
+<!-- 分享卡 -->
+<meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_desc | strip_html | strip_newlines | truncate: 150 }}">
+<meta property="og:url" content="{{ page_url }}">
+<meta property="og:image" content="{{ '/assets/img/og.png' | absolute_url }}">
+<meta property="og:locale" content="zh_CN">
+{% if page.layout == "post" %}
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+<meta property="article:author" content="{{ site.owner.name }}">
+{% for tag in page.tags %}<meta property="article:tag" content="{{ tag }}">
+{% endfor %}{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="twitter:description" content="{{ page_desc | strip_html | strip_newlines | truncate: 150 }}">
+<meta name="twitter:image" content="{{ '/assets/img/og.png' | absolute_url }}">
+
+<!-- 图标 -->
+<link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{{ '/assets/img/avatar.svg' | relative_url }}">
+<link rel="manifest" href="{{ '/manifest.webmanifest' | relative_url }}">
+
+<!-- 订阅 -->
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | relative_url }}">
+
+<!-- 样式 -->
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+{% if page.layout == "post" or page.layout == "page" %}
+<link rel="stylesheet" href="{{ '/assets/css/post.css' | relative_url }}">
+{% endif %}
+
+{% if page.layout == "post" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ page.title | jsonify }},
+  "description": {{ page.description | default: page.summary | default: site.description | jsonify }},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+  "author": { "@type": "Person", "name": {{ site.owner.name | jsonify }} },
+  "publisher": { "@type": "Person", "name": {{ site.owner.name | jsonify }} },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ page_url }}" },
+  "image": "{{ '/assets/img/og.png' | absolute_url }}"
+}
+</script>
+{% endif %}
+
+<!-- 主题预设：避免闪白 -->
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('yy-theme');
+      var mql = window.matchMedia('(prefers-color-scheme: dark)');
+      var mode = saved || 'auto';
+      document.documentElement.setAttribute('data-theme', mode);
+      document.documentElement.dataset.mode = mode;
+      if (mode === 'auto') {
+        document.documentElement.dataset.resolved = mql.matches ? 'dark' : 'light';
+      } else {
+        document.documentElement.dataset.resolved = mode;
+      }
+    } catch (e) {}
+  })();
+</script>

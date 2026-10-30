@@ -1,0 +1,49 @@
+<footer class="site-footer">
+  <div class="footer-wire" aria-hidden="true">
+    <span class="fw-bird fw-1">
+      <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+    </span>
+    <span class="fw-bird fw-2">
+      <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+    </span>
+    <span class="fw-bird fw-3">
+      <svg viewBox="22 0 96 70"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+    </span>
+  </div>
+
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <a class="brand brand--footer" href="{{ '/' | relative_url }}">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="22 0 96 70" class="brand-bird">
+            <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+            <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+          </svg>
+        </span>
+        <span class="brand-text"><strong>{{ site.title }}</strong><em>XIAO YAN ZI</em></span>
+      </a>
+      <p class="footer-say">{{ site.tagline }}。<br>一片一片，慢慢衔成一个巢。</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="页脚导航">
+      <div class="footer-col">
+        <h4>逛一逛</h4>
+        {% for item in site.nav limit: 4 %}
+        <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+        {% endfor %}
+      </div>
+      <div class="footer-col">
+        <h4>再来</h4>
+        <a href="{{ '/tags/' | relative_url }}">标签</a>
+        <a href="{{ '/search/' | relative_url }}">搜索</a>
+        <a href="{{ '/feed.xml' | relative_url }}">订阅 RSS</a>
+        <a href="https://github.com/{{ site.owner.github }}" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="wrap footer-meta">
+    <p>© {{ site.time | date: '%Y' }} {{ site.owner.name }} · 屋檐下写字，燕子不催</p>
+    <p class="footer-tech">用 Jekyll 手搓 · 无主题依赖 · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></p>
+  </div>
+</footer>

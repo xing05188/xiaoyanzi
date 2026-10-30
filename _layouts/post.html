@@ -1,0 +1,131 @@
+---
+layout: default
+---
+{% assign cat = page.categories | first | default: '笔记' %}
+{% assign words = page.content | strip_html | strip_newlines | size %}
+{% assign mins = words | divided_by: 400 | plus: 1 %}
+
+<div class="read-progress" id="readProgress" aria-hidden="true"></div>
+
+<article class="post">
+  <header class="post-head">
+    <svg class="post-head__bird" viewBox="22 0 96 70" aria-hidden="true">
+      <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+      <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+    </svg>
+    <div class="wrap">
+      <div class="post-head__inner">
+        <div class="post-kicker">
+          <span class="chip{% if cat == '生活' %} chip--life{% endif %}{% if cat == '读书' %} chip--read{% endif %}">{{ cat }}</span>
+          <span class="sep"></span>
+          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y 年 %-m 月 %-d 日' }}</time>
+          <span class="sep"></span>
+          <span>{{ words }} 字 · 约 {{ mins }} 分钟</span>
+        </div>
+
+        <h1 class="post-title">{{ page.title }}</h1>
+
+        {% if page.description or page.summary %}
+        <p class="post-sub">{{ page.description | default: page.summary }}</p>
+        {% endif %}
+
+        <div class="post-metabar">
+          <span class="m">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8.4" r="3.6"/><path d="M4.8 20c.6-3.6 3.6-5.6 7.2-5.6s6.6 2 7.2 5.6"/></svg>
+            {{ site.owner.name }}
+          </span>
+          <span class="m">
+            <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
+            {{ page.date | date: '%Y.%m.%d' }}
+          </span>
+          {% if page.reading_time %}{% endif %}
+          <div class="post-tags">
+            {% for t in page.tags %}
+            <a href="{{ '/tags/' | relative_url }}#{{ t | uri_escape }}">#{{ t }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="post-shell">
+      <div class="post-main">
+
+        <div class="prose" id="postBody">
+          {{ content }}
+        </div>
+
+        <div class="post-end">
+          <button class="like-btn" id="likeBtn" type="button" data-key="{{ page.url }}">
+            <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.6-7 9-7 9z"/></svg>
+            <span id="likeText">喜欢</span>
+          </button>
+
+          <div class="share-group">
+            <span>分享到</span>
+            <button class="share-btn" type="button" data-share="copy" title="复制链接" aria-label="复制链接">
+              <svg viewBox="0 0 24 24"><path d="M9.5 13.5a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 0 0-5.7-5.7l-1.2 1.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14.5 10.5a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 0 0 5.7 5.7l1.2-1.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+            <button class="share-btn" type="button" data-share="weibo" title="分享到微博" aria-label="分享到微博">
+              <svg viewBox="0 0 24 24"><path d="M10 5.5c-4 0-7.5 2.6-7.5 5.6 0 2.7 2.8 4.8 6.5 4.8 4.4 0 8.5-2.4 8.5-5.5 0-2.5-2.9-4.4-6.9-4.4zm-1.6 8.6c-1.7.2-3.2-.6-3.3-1.8-.1-1.2 1.2-2.2 2.9-2.4 1.7-.2 3.2.6 3.3 1.8.1 1.2-1.2 2.2-2.9 2.4z"/></svg>
+            </button>
+            <button class="share-btn" type="button" data-share="native" title="更多" aria-label="更多分享方式">
+              <svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.9"/><circle cx="12" cy="6" r="1.9"/><circle cx="12" cy="18" r="1.9"/><circle cx="18" cy="12" r="1.9"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="post-license">
+          本文由 <strong>{{ site.owner.name }}</strong> 写于檐下，采用
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
+          许可。转载请注明作者与出处，谢谢你的礼貌。
+        </p>
+
+        <nav class="post-nav" aria-label="上下篇">
+          {% if page.previous %}
+          <a href="{{ page.previous.url | relative_url }}">
+            <span class="dir">← 早一点写的</span>
+            <span class="ttl">{{ page.previous.title }}</span>
+          </a>
+          {% else %}<span class="empty-cell"></span>{% endif %}
+
+          {% if page.next %}
+          <a class="next" href="{{ page.next.url | relative_url }}">
+            <span class="dir">后来写的 →</span>
+            <span class="ttl">{{ page.next.title }}</span>
+          </a>
+          {% else %}<span class="empty-cell"></span>{% endif %}
+        </nav>
+
+        {% assign same = site.posts | where: "type", page.type %}
+        {% assign shown = 0 %}
+        <section class="related">
+          <h3>同一根枝上的</h3>
+          <div class="related-list">
+            {% for p in same limit: 6 %}
+              {% if p.url != page.url and shown < 3 %}
+                {% assign shown = shown | plus: 1 %}
+                <a href="{{ p.url | relative_url }}">
+                  <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: '%m.%d' }}</time>
+                  <span>{{ p.title }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="toc" id="toc" aria-label="本文目录">
+        <h4>目录</h4>
+        <ul id="tocList"></ul>
+      </aside>
+    </div>
+  </div>
+</article>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="图片预览" aria-hidden="true">
+  <img alt="">
+</div>

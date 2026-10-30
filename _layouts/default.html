@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'zh-CN' }}" data-theme="auto">
+<head>
+  {% include head.html %}
+</head>
+<body class="{% if page.body_class %}{{ page.body_class }}{% else %}{{ page.layout }}{% endif %}">
+
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!-- 全站天幕：渐变 + 云 -->
+  <div class="sky" aria-hidden="true">
+    <div class="sky__glow"></div>
+    <div class="sky__cloud cloud-1"></div>
+    <div class="sky__cloud cloud-2"></div>
+    <div class="sky__cloud cloud-3"></div>
+  </div>
+
+  {% include header.html %}
+
+  <main id="main" class="site-main">
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+  <button class="to-top" id="toTop" type="button" aria-label="回到顶部" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script>window.YY_BASE = "{{ site.baseurl }}";</script>
+  <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+</body>
+</html>

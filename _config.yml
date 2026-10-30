@@ -1,0 +1,87 @@
+# ============================================================
+#  燕语 · 站点配置
+#  技术栈：Jekyll + GitHub Pages（原生构建，零主题依赖）
+#
+#  写新文章：在 _posts/ 下新建  2026-11-01-your-title.md
+#  改个人信息：往下找 owner / nav / social
+# ============================================================
+
+# ---------- 站点 ----------
+title: 燕语
+subtitle: 小燕子的檐下笔记
+tagline: 衔一段春泥，筑一间小屋
+description: 小燕子，江西科技师范大学学生。在这里存放学习笔记、生活碎片和读书摘抄 —— 一片一片，慢慢衔成一个巢。
+author: 小燕子
+email: ""
+url: "https://www.xiaoyanzi0927.cc.cd"
+baseurl: ""
+timezone: Asia/Shanghai
+encoding: utf-8
+lang: zh-CN
+
+# ---------- 作者 ----------
+owner:
+  name: 小燕子
+  handle: 小燕子
+  school: 江西科技师范大学
+  city: 南昌
+  major: 计算机相关专业
+  bio: 江西科技师范大学在读，南昌。写字慢，但一直在写。
+  github: xing05188
+  avatar: /assets/img/avatar.svg
+  # 建站日：用来算「在檐下住了多少天」
+  since: 2026-03-20
+
+# ---------- 导航 ----------
+nav:
+  - { name: 首页, url: "/" }
+  - { name: 笔记, url: "/notes/" }
+  - { name: 生活, url: "/life/" }
+  - { name: 归档, url: "/archive/" }
+  - { name: 标签, url: "/tags/" }
+  - { name: 关于, url: "/about/" }
+
+# ---------- 链接格式 ----------
+permalink: /posts/:title/
+
+# ---------- Markdown ----------
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  toc_levels: 2..3
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+highlighter: rouge
+
+# ---------- 默认值 ----------
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: page
+
+# ---------- 构建排除 ----------
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - node_modules
+  - scripts
+  - .codebuddy
+  - .gitignore
+
+# ---------- 首页展示 ----------
+home_posts_limit: 6

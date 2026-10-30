@@ -1,0 +1,34 @@
+---
+layout: page
+title: 标签
+description: 一间屋子里的几个抽屉。找不到想看的，就从这里翻。
+permalink: /tags/
+wide: true
+---
+
+{% assign sorted_tags = site.tags | sort %}
+
+{% if sorted_tags.size > 0 %}
+<div class="tag-cloud">
+  {% for tag in sorted_tags %}
+  {% assign posts = tag[1] %}
+  <a class="tag-pill" href="#tag-{{ forloop.index }}" style="font-size: {{ posts.size | times: 0.12 | plus: 0.86 }}rem;">
+    {{ tag[0] }}<span class="n">{{ posts.size }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% for tag in sorted_tags %}
+{% assign posts = tag[1] %}
+<section class="tag-section" id="tag-{{ forloop.index }}">
+  <h2><span class="hash">#</span><span>{{ tag[0] }}</span><span class="n">{{ posts.size }} 篇</span></h2>
+  {% for post in posts %}
+  <a class="arch-item" href="{{ post.url | relative_url }}">
+    <span class="arch-date">{{ post.date | date: '%Y.%m.%d' }}</span>
+    <span class="arch-title">{{ post.title }}</span>
+    <span class="arch-cat">{{ post.categories | first }}</span>
+  </a>
+  {% endfor %}
+</section>
+{% endfor %}

@@ -1,0 +1,38 @@
+---
+layout: page
+title: 归档
+description: 按时间倒着排，像一串停在电线上的燕子。
+permalink: /archive/
+wide: true
+---
+
+{% assign by_year = site.posts | group_by_exp: "p", "p.date | date: '%Y'" %}
+
+{% if site.posts.size == 0 %}
+<p>还没有文章。</p>
+{% endif %}
+
+{% for group in by_year %}
+<section class="archive-year">
+  <h2>
+    <span>{{ group.name }}</span>
+    <span class="y-line"></span>
+    <span class="y-count">{{ group.items.size }} 篇</span>
+  </h2>
+
+  {% assign by_month = group.items | group_by_exp: "p", "p.date | date: '%m'" %}
+  {% for m in by_month %}
+  <div class="month-block">
+    <div class="month-label">{{ m.name }} 月</div>
+    {% for post in m.items %}
+    {% assign cat = post.categories | first | default: '笔记' %}
+    <a class="arch-item" href="{{ post.url | relative_url }}">
+      <span class="arch-date">{{ post.date | date: '%m.%d' }}</span>
+      <span class="arch-title">{{ post.title }}</span>
+      <span class="arch-cat">{{ cat }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</section>
+{% endfor %}

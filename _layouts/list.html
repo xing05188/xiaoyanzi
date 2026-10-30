@@ -1,0 +1,62 @@
+---
+layout: default
+---
+{% assign items = site.posts | where: "type", page.type_filter %}
+{% assign all_tags = "" | split: "" %}
+{% for item in items %}
+  {% for t in item.tags %}
+    {% unless all_tags contains t %}{% assign all_tags = all_tags | push: t %}{% endunless %}
+  {% endfor %}
+{% endfor %}
+
+<div class="page-head">
+  <div class="wrap">
+    <span class="perch" aria-hidden="true" style="width: 210px;">
+      <span class="perch-wire"></span>
+      <span class="perch-bird">
+        <svg viewBox="22 0 96 70">
+          <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+          <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+        </svg>
+      </span>
+    </span>
+    <h1 class="page-title">{{ page.title }}</h1>
+    {% if page.description %}<p class="page-lead">{{ page.description }}</p>{% endif %}
+    <span class="page-count">共 {{ items.size }} 篇 · 按时间从新到旧</span>
+  </div>
+</div>
+
+<div class="wrap">
+  {% if all_tags.size > 0 %}
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn is-on" type="button" data-tag="*">全部</button>
+    {% for t in all_tags %}
+    <button class="filter-btn" type="button" data-tag="{{ t }}">{{ t }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="rows" id="postRows">
+    {% for item in items %}
+    {% assign cat = item.categories | first | default: '笔记' %}
+    <div class="row reveal" data-tags="{{ item.tags | join: '|' }}">
+      <time class="row-date" datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: '%Y.%m.%d' }}</time>
+      <div>
+        <h3 class="row-title"><a href="{{ item.url | relative_url }}">{{ item.title }}</a></h3>
+        <p class="row-desc">{{ item.description | default: item.summary | strip_html | truncate: 96 }}</p>
+      </div>
+      <div class="row-meta">
+        <span class="chip{% if cat == '生活' %} chip--life{% endif %}{% if cat == '读书' %} chip--read{% endif %}">{{ cat }}</span>
+        <span>{{ item.content | strip_html | strip_newlines | size }} 字</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if items.size == 0 %}
+  <div class="empty">
+    <svg viewBox="22 0 96 70" fill="currentColor"><path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/><path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/></svg>
+    <p>这里还空着，等燕飞回来。</p>
+  </div>
+  {% endif %}
+</div>

@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<div class="page-head">
+  <div class="wrap">
+    <span class="perch" aria-hidden="true" style="width: 210px;">
+      <span class="perch-wire"></span>
+      <span class="perch-bird">
+        <svg viewBox="22 0 96 70">
+          <path d="M105 19c4-1 7 1 8 4 1 4-2 7-7 8-8 2-15 6-22 11L52 66l10-15-26 4 19-12c9-4 19-11 27-17 5-4 12-6 18-5z"/>
+          <path d="M86 30C78 17 63 6 46 2c12 11 21 21 25 34z"/>
+        </svg>
+      </span>
+    </span>
+    <h1 class="page-title">{{ page.title }}</h1>
+    {% if page.description %}<p class="page-lead">{{ page.description }}</p>{% endif %}
+    {% if page.count_text %}<span class="page-count">{{ page.count_text }}</span>{% endif %}
+  </div>
+</div>
+
+<div class="wrap">
+  <article class="prose{% if page.wide %} prose--wide{% endif %}">
+    {{ content }}
+  </article>
+</div>

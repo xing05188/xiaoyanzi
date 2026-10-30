@@ -1,0 +1,24 @@
+{% assign p = include.post %}
+{% assign cat = p.categories | first | default: '笔记' %}
+{% assign chip_class = 'chip' %}
+{% if cat == '生活' %}{% assign chip_class = 'chip chip--life' %}{% endif %}
+{% if cat == '读书' %}{% assign chip_class = 'chip chip--read' %}{% endif %}
+{% assign words = p.content | strip_html | strip_newlines | size %}
+{% assign mins = words | divided_by: 400 | plus: 1 %}
+
+<article class="card reveal">
+  <div class="card-top">
+    <span class="{{ chip_class }}">{{ cat }}</span>
+    <time class="card-date" datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: '%Y.%m.%d' }}</time>
+  </div>
+  <h3 class="card-title"><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h3>
+  <p class="card-desc">{{ p.description | default: p.summary | strip_html | truncate: 82 }}</p>
+  <div class="card-foot">
+    <span>{{ mins }} 分钟</span>
+    <span class="dot"></span>
+    <span>{{ words }} 字</span>
+    <span class="card-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+    </span>
+  </div>
+</article>
